@@ -34,3 +34,11 @@ def get_shop_list_by_dishes(dishes, person_count):
     return shop_list
 
 
+def merge_files(files):
+    with open('sorted_files.txt', 'w', encoding='utf-8') as output_file:
+        for file in files:
+            with open(file, 'r', encoding='utf-8') as input_file:
+                lines = input_file.readlines()
+                output_file.write(f'{file}\n')
+                output_file.write(f'{len(lines)}\n')
+                output_file.write(''.join(lines))
