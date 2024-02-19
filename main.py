@@ -1,4 +1,4 @@
-def my_cook_book() :
+def my_cook_book():
     with open('recipes.txt', encoding='utf-8') as file:
         cook_book = {}
         for line in file.read().split('\n\n'):
@@ -9,7 +9,10 @@ def my_cook_book() :
                 cook_li.append({'ingredient_name': ingredient_name, 'quantity': quantity, 'measure': measure})
             cook_book[name] = cook_li
     return cook_book
+
+
 cook_book = my_cook_book()
+
 
 def get_products_from_cook_li(cook_book):
     products = []
@@ -34,11 +37,44 @@ def get_shop_list_by_dishes(dishes, person_count):
     return shop_list
 
 
+import os
+
+import os
+
+import os
+
 def merge_files(files):
-    with open('sorted_files.txt', 'w', encoding='utf-8') as output_file:
-        for file in files:
-            with open(file, 'r', encoding='utf-8') as input_file:
-                lines = input_file.readlines()
-                output_file.write(f'{file}\n')
-                output_file.write(f'{len(lines)}\n')
-                output_file.write(''.join(lines))
+    """
+    Функция объединяет файлы в один, сортируя их по количеству строк.
+
+    :param files: Список файлов для объединения.
+    :return: None
+    """
+
+    # Отфильтруем файлы с расширением txt
+    txt_files = [file for file in files if file.endswith('.txt')]
+
+    # Создадим словарь с информацией о файлах
+    file_info = {}
+    for file in txt_files:
+        with open(file, encoding='utf-8') as input_file:
+            num_lines = len(input_file.readlines())
+            file_info[file] = (num_lines, input_file.read())
+
+    # Сортируем словарь по количеству строк
+    sorted_files = sorted(file_info, key=lambda file, info=file_info[file]: info[0])
+
+    # Запишем отсортированную информацию в выходной файл
+    with open('merged_files.txt', 'w', encoding='utf-8') as output_file:
+        for file in sorted_files:
+            output_file.write(f'{file}\n')
+            output_file.write(f'{file_info[file][0]}\n')
+            output_file.write(f'{file_info[file][1]}\n\n')
+
+
+if __name__ == '__main__':
+    # Получим список всех файлов в текущей папке
+    files = os.listdir('.')
+
+    # Вызовем функцию для объединения файлов
+    merge_files(files)
